@@ -9,7 +9,7 @@
     <UseCodebase>true</UseCodebase>
     <TargetFrameworkProfile />
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
-    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptModuleKind>CommonJs</TypeScriptModuleKind>
     <TypeScriptStrictNullChecks>true</TypeScriptStrictNullChecks>
   </PropertyGroup>
   <PropertyGroup>
@@ -193,6 +193,8 @@
     <Content Include="node_modules\xterm\src\Viewport.ts" />
     <Content Include="node_modules\xterm\src\xterm.css" />
     <Content Include="node_modules\xterm\src\xterm.js" />
+    <TypeScriptCompile Include="service\pty.ts" />
+    <TypeScriptCompile Include="typings\node-pty.d.ts" />
     <TypeScriptCompile Include="typings\xterm.d.ts" />
     <TypeScriptCompile Include="typings\definitions.d.ts" />
     <TypeScriptCompile Include="view\linkMatcher.ts" />
@@ -447,7 +449,6 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
-    
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

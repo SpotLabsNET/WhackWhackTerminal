@@ -1,10 +1,8 @@
 ﻿'use strict';
-
-var os = require('os');
-var pty = require('node-pty');
+import * as pty from 'node-pty';
 
 // you may need to edit a file that gets pulled down, was a bug when i did. search and remove the obvious 'noif'
-var rpc = require('vscode-jsonrpc');
+import * as rpc from 'vscode-jsonrpc';
 
 const is32ProcessOn64Windows = process.env.hasOwnProperty('PROCESSOR_ARCHITEW6432');
 
@@ -12,8 +10,8 @@ const powerShellPath = `${process.env.windir}\\${is32ProcessOn64Windows ? 'Sysna
 const cmdPath = `${process.env.windir}\\${is32ProcessOn64Windows ? 'Sysnative' : 'System32'}\\cmd.exe`;
 const bashPath = `${process.env.windir}\\${is32ProcessOn64Windows ? 'Sysnative' : 'System32'}\\bash.exe`;
 
-function ServicePty(stream, _host) {
-    this.connection = rpc.createMessageConnection(new rpc.StreamMessageReader(stream), new rpc.StreamMessageWriter(stream));
+function ServicePty(stream: NodeJS.ReadWriteStream, _host) {
+    this.connection = rpc.createMessageConnection(stream, stream, console);
     this.ptyConnection = null;
 
     this.connection.onRequest('initTerm', (shell, cols, rows, start) => this.initTerm(shell, cols, rows, start));
@@ -50,7 +48,6 @@ ServicePty.prototype.initTerm = function (shell, cols, rows, startDir) {
         cwd: startDir,
         env: process.env
     });
-
     this.ptyConnection.on('data', (data) => this.ptyData(data));
     this.ptyConnection.on('exit', (code) => this.ptyExit(code));
 }
