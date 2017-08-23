@@ -22,7 +22,6 @@
     }
 
     TerminalLinkHandler.prototype.validateLocalLink = function (link, element, callback) {
-        document.getElementById("debug").innerText = "" + link + callback;
         if (window.external.ValidateLocalLink(link)) {
             callback(true);
         } else {

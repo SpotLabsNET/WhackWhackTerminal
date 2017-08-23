@@ -108,18 +108,6 @@ TermView.prototype.registerKeyboardHandlers = function () {
     });
 }
 
-function getMethods(obj) {
-    var result = [];
-    for (var id in obj) {
-        try {
-            result.push(id + '\n');
-        } catch (err) {
-            result.push(id + ": inaccessible");
-        }
-    }
-    return result;
-}
-
 function invokeTerm(method, arg) {
     termView[method](arg);
 }

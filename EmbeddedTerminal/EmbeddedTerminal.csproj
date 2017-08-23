@@ -9,6 +9,8 @@
     <UseCodebase>true</UseCodebase>
     <TargetFrameworkProfile />
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptStrictNullChecks>true</TypeScriptStrictNullChecks>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -445,6 +447,7 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
