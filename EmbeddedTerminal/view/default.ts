@@ -1,5 +1,7 @@
 ﻿var termView;
 
+import { Terminal } from 'xterm';
+
 function TermView() {
     this.resizeTimeout = null;
     this.term = new Terminal({
@@ -36,6 +38,7 @@ TermView.prototype.ptyData = function (data) {
 
 TermView.prototype.initTerm = function () {
     var term = this.term;
+
     window.external.InitTerm(term.cols, term.rows, this.solutionDir());
 }
 
