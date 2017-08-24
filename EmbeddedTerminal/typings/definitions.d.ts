@@ -10,3 +10,9 @@ interface External {
     HandleLocalLink(uri: string): void;
     ValidateLocalLink(link: string): boolean;
 }
+
+declare module 'xterm' {
+    interface Terminal {
+        fit(): void;
+    }
+}

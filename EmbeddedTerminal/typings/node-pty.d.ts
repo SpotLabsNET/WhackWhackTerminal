@@ -16,12 +16,16 @@ declare module 'node-pty' {
  		 */
 		process: string;
 
-		on(event: string, callback: (data: any) => void): void;
+        on(event: string, callback: (data: any) => void): void;
+
+        removeAllListeners(eventName: string): void;
 
 		resize(columns: number, rows: number): void;
 
 		write(data: string): void;
 
-		kill(): void;
+        kill(): void;
+
+        destroy(): void;
 	}
 }

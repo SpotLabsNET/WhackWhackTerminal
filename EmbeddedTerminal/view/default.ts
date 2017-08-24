@@ -1,111 +1,118 @@
 ﻿var termView;
 
 import { Terminal } from 'xterm';
+import * as link from './linkMatcher';
 
-function TermView() {
-    this.resizeTimeout = null;
-    this.term = new Terminal({
-        cursorBlink: true,
-        cols: 80,
-        rows: 24
-    });
-    this.term.open(document.getElementById('content'));
-    this.term.fit();
-    this.term.on('data', this.termData.bind(this));
+class TermView { 
+    private resizeTimeout: number | null;
+    private term: Terminal;
 
-    window.addEventListener("resize", this.resizeHandler.bind(this), false);
-
-    this.initTerm();
-    this.registerKeyboardHandlers();
-    registerLinkMatcher(this.term);
-}
-
-TermView.prototype.solutionDir = function () {
-    return window.external.GetSolutionDir();
-}
-
-TermView.prototype.copyString = function (stringToCopy) {
-    window.external.CopyStringToClipboard(stringToCopy);
-}
-
-TermView.prototype.getClipboard = function () {
-    return window.external.GetClipboard();
-}
-
-TermView.prototype.ptyData = function (data) {
-    this.term.write(data);
-}
-
-TermView.prototype.initTerm = function () {
-    var term = this.term;
-
-    window.external.InitTerm(term.cols, term.rows, this.solutionDir());
-}
-
-TermView.prototype.reInitTerm = function (code) {
-    if (code != null) {
-        this.term.write('terminal exited with code: ' + code + ', restarting the terminal\n\r');
-    } else {
-        this.term.write('terminal was exited, restarting terminal instance\n\r');
-    }
-    this.initTerm();
-}
-
-TermView.prototype.termData = function (data) {
-    window.external.TermData(data);
-}
-
-TermView.prototype.focus = function() {
-	this.term.focus();
-}
-
-TermView.prototype.resizeHandler = function () {
-    var term = this.term;
-    var actualHandler = function () {
-        term.fit();
-        window.external.ResizeTerm(term.cols, term.rows);
-    };
-
-    var timeoutCallBack = function () {
+    constructor() {
         this.resizeTimeout = null;
-        actualHandler();
+        this.term = new Terminal({
+            cursorBlink: true,
+            cols: 80,
+            rows: 24
+        });
+
+        this.term.open(document.getElementById('content')!);
+        this.term.fit();
+        this.term.on('data', this.termData.bind(this));
+
+        window.addEventListener("resize", this.resizeHandler.bind(this), false);
+
+        this.initTerm();
+        this.registerKeyboardHandlers();
+        link.registerLinkMatcher(this.term);
     }
 
-    // ignore resize events as long as an actualResizeHandler execution is in the queue
-    if (!this.resizeTimeout) {
-        this.resizeTimeout = setTimeout(timeoutCallBack.bind(this), 66);
+    private solutionDir(): string {
+        return window.external.GetSolutionDir();
     }
-}
 
-TermView.prototype.registerKeyboardHandlers = function () {
-    var term = this.term;
-    var copy = this.copyString.bind(this);
-    var getClipboard = this.getClipboard.bind(this);
-    var termData = this.termData.bind(this);
+    private copyString(stringToCopy): void {
+        window.external.CopyStringToClipboard(stringToCopy);
+    }
 
-    term.attachCustomKeyEventHandler(function (event) {
-        // capture Ctrl+C
-        if (event.ctrlKey && event.keyCode == 67 && term.hasSelection()) {
-            copy(term.getSelection());
-            term.clearSelection();
-            return false;
-        // capture Ctrl+V
-        } else if (event.ctrlKey && event.keyCode == 86) {
-            return false;
-        }
+    private getClipboard(): string {
+        return window.external.GetClipboard();
+    }
 
-        return true;
-    });
+    private ptyData(data): void {
+        this.term.write(data);
+    }
 
-    window.addEventListener('contextmenu', function (event) {
-        if (term.hasSelection()) {
-            copy(term.getSelection());
-            term.clearSelection();
+    private initTerm(): void {
+        var term = this.term;
+
+        window.external.InitTerm(term.cols, term.rows, this.solutionDir());
+    }
+
+    private reInitTerm(code) {
+        if (code != null) {
+            this.term.write('terminal exited with code: ' + code + ', restarting the terminal\n\r');
         } else {
-            var content = getClipboard()
-            termData(content);
+            this.term.write('terminal was exited, restarting terminal instance\n\r');
         }
-    });
+        this.initTerm();
+    }
+
+    private termData(data) {
+        window.external.TermData(data);
+    }
+
+    private focus = function() {
+	    this.term.focus();
+    }
+
+    private resizeHandler() {
+        var term = this.term;
+        var actualHandler = function () {
+            term.fit();
+            window.external.ResizeTerm(term.cols, term.rows);
+        };
+
+        var timeoutCallBack = function () {
+            this.resizeTimeout = null;
+            actualHandler();
+        }
+
+        // ignore resize events as long as an actualResizeHandler execution is in the queue
+        if (!this.resizeTimeout) {
+            this.resizeTimeout = setTimeout(timeoutCallBack.bind(this), 66);
+        }
+    }
+
+    private registerKeyboardHandlers() {
+        var term = this.term;
+        var copy = this.copyString.bind(this);
+        var getClipboard = this.getClipboard.bind(this);
+        var termData = this.termData.bind(this);
+
+        term.attachCustomKeyEventHandler(function (event) {
+            // capture Ctrl+C
+            if (event.ctrlKey && event.keyCode == 67 && term.hasSelection()) {
+                copy(term.getSelection());
+                term.clearSelection();
+                return false;
+            // capture Ctrl+V
+            } else if (event.ctrlKey && event.keyCode == 86) {
+                return false;
+            }
+
+            return true;
+        });
+
+        window.addEventListener('contextmenu', function (event) {
+            if (term.hasSelection()) {
+                copy(term.getSelection());
+                term.clearSelection();
+            } else {
+                var content = getClipboard()
+                termData(content);
+            }
+        });
+    }
 }
 
 function invokeTerm(method, arg) {
