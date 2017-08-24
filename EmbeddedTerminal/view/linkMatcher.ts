@@ -1,6 +1,4 @@
-﻿import { Terminal } from 'xterm';
-
-const LOCAL_LINK_PRIORITY = -2;
+﻿const LOCAL_LINK_PRIORITY = -2;
 
 class TerminalLinkHandler {
     private terminal: Terminal;

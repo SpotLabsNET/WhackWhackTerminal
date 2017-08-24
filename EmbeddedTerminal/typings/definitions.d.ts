@@ -11,8 +11,8 @@ interface External {
     ValidateLocalLink(link: string): boolean;
 }
 
-declare module 'xterm' {
-    interface Terminal {
-        fit(): void;
-    }
+
+
+interface Terminal {
+    fit(): void;
 }

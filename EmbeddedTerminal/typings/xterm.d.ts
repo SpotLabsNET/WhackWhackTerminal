@@ -82,11 +82,7 @@ interface ILinkMatcherOptions {
   priority?: number;
 }
 
-declare module 'xterm' {
-  /**
-   * The class that represents an xterm.js terminal.
-   */
-  export class Terminal {
+declare class Terminal {
     /**
      * The element containing the terminal.
      */
@@ -153,13 +149,13 @@ declare module 'xterm' {
      * @param type The type of the event.
      * @param listener The listener.
      */
-    on(type: 'refresh', listener: (data?: {start: number, end: number}) => void): void;
+    on(type: 'refresh', listener: (data?: { start: number, end: number }) => void): void;
     /**
      * Registers an event listener.
      * @param type The type of the event.
      * @param listener The listener.
      */
-    on(type: 'resize', listener: (data?: {cols: number, rows: number}) => void): void;
+    on(type: 'resize', listener: (data?: { cols: number, rows: number }) => void): void;
     /**
      * Registers an event listener.
      * @param type The type of the event.
@@ -226,7 +222,7 @@ declare module 'xterm' {
      * @param options Options for the link matcher.
      * @return The ID of the new matcher, this can be used to deregister.
      */
-    registerLinkMatcher(regex: RegExp, handler: (event: MouseEvent, uri: string) => boolean | void , options?: ILinkMatcherOptions): number;
+    registerLinkMatcher(regex: RegExp, handler: (event: MouseEvent, uri: string) => boolean | void, options?: ILinkMatcherOptions): number;
 
     /**
      * (EXPERIMENTAL) Deregisters a link matcher if it has been registered.
@@ -419,5 +415,4 @@ declare module 'xterm' {
      * @param addon The addon to load.
      */
     static loadAddon(addon: 'attach' | 'fit' | 'fullscreen' | 'search' | 'terminado'): void;
-  }
 }
