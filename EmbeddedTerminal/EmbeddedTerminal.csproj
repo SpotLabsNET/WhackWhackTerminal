@@ -9,7 +9,6 @@
     <UseCodebase>true</UseCodebase>
     <TargetFrameworkProfile />
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
-    <TypeScriptModuleKind>CommonJs</TypeScriptModuleKind>
     <TypeScriptStrictNullChecks>true</TypeScriptStrictNullChecks>
   </PropertyGroup>
   <PropertyGroup>
@@ -39,6 +38,7 @@
     <StartAction>Program</StartAction>
     <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
     <StartArguments>/rootsuffix Exp</StartArguments>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -81,7 +81,13 @@
     <Content Include="node_modules\promise-polyfill\promise.js">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="node_modules\requirejs\require.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="node_modules\systemjs\dist\system.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="node_modules\xdomain\dist\xdomain.js">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="view\custom.css">
@@ -438,12 +444,12 @@
       <VSIXSubPath>view</VSIXSubPath>
     </TypeScriptCompile>
   </ItemGroup>
-  <PropertyGroup>
-    <TypeScriptModuleKind>CommonJs</TypeScriptModuleKind>
-  </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="service\pty.ts" />
   </ItemGroup>
+  <!-- <PropertyGroup>
+  <TypeScriptModuleKind>CommonJs</TypeScriptModuleKind>
+  </PropertyGroup> -->
   <ItemGroup>
     <VsixSourceItem Include="view\*.js">
       <InProject>false</InProject>

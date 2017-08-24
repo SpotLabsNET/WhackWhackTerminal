@@ -1,10 +1,11 @@
-﻿'use strict';
-import * as pty from 'node-pty';
-import { Terminal } from 'node-pty';
+﻿/// <reference path="../node_modules/vscode-jsonrpc/lib/main.d.ts" />
+
+'use strict';
+
+var pty = require('node-pty');
+var rpc = require('vscode-jsonrpc');
 
 // you may need to edit a file that gets pulled down, was a bug when i did. search and remove the obvious 'noif'
-import * as rpc from 'vscode-jsonrpc';
-import { MessageConnection } from 'vscode-jsonrpc';
 
 const is32ProcessOn64Windows = process.env.hasOwnProperty('PROCESSOR_ARCHITEW6432');
 
@@ -12,9 +13,9 @@ const powerShellPath = `${process.env.windir}\\${is32ProcessOn64Windows ? 'Sysna
 const cmdPath = `${process.env.windir}\\${is32ProcessOn64Windows ? 'Sysnative' : 'System32'}\\cmd.exe`;
 const bashPath = `${process.env.windir}\\${is32ProcessOn64Windows ? 'Sysnative' : 'System32'}\\bash.exe`;
 
-export class ServicePty {
-    private connection: MessageConnection;
-    private ptyConnection: Terminal | null;
+class ServicePty {
+    private connection: any;
+    private ptyConnection: any | null;
 
     constructor(stream: NodeJS.ReadWriteStream, _host) {
         this.connection = rpc.createMessageConnection(stream, stream, console);
@@ -79,3 +80,5 @@ export class ServicePty {
         this.connection.sendRequest('ReInitTerm', [code]);
     }
 }
+
+exports.ServicePty = ServicePty;

@@ -7,8 +7,10 @@
     "es6-promise": "^4.1.1",
     "node-pty": "^0.6.10",
     "promise-polyfill": "^6.0.2",
+    "requirejs": "^2.3.5",
     "systemjs": "^0.20.18",
     "vscode-jsonrpc": "^3.3.1",
+    "xdomain": "^0.7.3",
     "xterm": "=2.8.1"
   },
   "devDependencies": {

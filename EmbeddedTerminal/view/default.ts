@@ -1,5 +1,4 @@
-﻿
-//import { Terminal } from 'xterm';
+﻿//import { Terminal } from 'xterm';
 import * as link from './linkMatcher';
 
 class TermView { 
@@ -114,11 +113,8 @@ class TermView {
     }
 }
 
-function invokeTerm(method, arg) {
-    termView[method](arg);
-}
+(<any>window).termView = new TermView();
 
-var termView = new TermView();
 document.addEventListener("DOMContentLoaded", function (event) {
     //termView = 
 });

@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="default.css" data-plugin-theme="true" />
     <script src="../node_modules/xterm/dist/xterm.js" type="text/javascript"></script>
     <script src="../node_modules/promise-polyfill/promise.js" type="text/javascript"></script>
-    <script src="../node_modules/xterm/dist/addons/fit/fit.js" type="text/javascript"></script>
-    <script src="../node_modules/xterm/dist/addons/fullscreen/fullscreen.js" type="text/javascript"></script>
+	<script src="../node_modules/xterm/dist/addons/fit/fit.js" type="text/javascript"></script>
+	<script src="../node_modules/xterm/dist/addons/fit/fit.js" type="text/javascript"></script>
 </head>
 <body>
     <div id="content" style="height: 100%">
@@ -19,21 +19,11 @@
 	<div id="debug">
 		debug: 
 	</div>
-    <script src="../node_modules/systemjs/dist/system.js"></script>
+    <script data-main="default" src="../node_modules/requirejs/require.js"></script>
     <script>
-        SystemJS.config({
-            packages: {
-                '.': {
-                    defaultExtension: 'js'
-                }
-            },
-            meta: {
-                'xterm': {
-                    format: 'global'
-                }
-            }
-        });
-        SystemJS.import('default.js');
+        function invokeTerm(method, arg) {
+            window.termView[method](arg);
+        }
     </script>
 </body>
 </html>
